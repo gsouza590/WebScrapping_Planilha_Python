@@ -3,12 +3,14 @@ import re
 
 import xlwings as xw
 from xlwings.constants import BordersIndex
+import configparser
 
 
 
 
 def extrair_informacoes_dos_dados(dados):
     procedimento, documento, contraProva, substancia = dados
+
 
     # Regex
     NomeRegex = r'\w+'
@@ -45,7 +47,10 @@ def extrair_informacoes_dos_dados(dados):
 def atualizar_planilha(dados):
     procedimentoNome, procedimentoNumeroDois, procedimentoNumeroUm, documentoNome, documentoNumeroUm, documentoNumeroDois, contraProvaReNumeroUm, contraProvaReNumeroDois, substanciaNome = dados
 
-    wb = xw.Book('Contraprova-Controle.xlsm')
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    caminho = config.get('Config','caminho')
+    wb = xw.Book(caminho)
     ws = wb.sheets['Contraprova']
 
     # Encontra a última linha preenchida
