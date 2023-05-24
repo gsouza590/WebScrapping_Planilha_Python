@@ -1,12 +1,17 @@
-import sys
-
-import PySimpleGUI as sg
-import time
 import os
-from add_lacre import adicionar_valor_lacre
-from extracao_dados import extrair_dados
-from extrair_informacao_dados import *
-from tela_login import fazer_login
+import PySimpleGUI as sg
+import xlwings as xw
+from bs4 import BeautifulSoup
+import sys
+from xlwings.constants import BordersIndex
+import configparser
+import warnings
+import requests
+import urllib3
+
+from utils.modulo_addlacre import *
+from utils.modulo_extracao import *
+from utils.modulo_login import *
 
 session = fazer_login()
 
