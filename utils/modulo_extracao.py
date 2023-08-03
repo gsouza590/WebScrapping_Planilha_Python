@@ -1,29 +1,13 @@
-import os
 import PySimpleGUI as sg
-import xlwings as xw
 from bs4 import BeautifulSoup
 import sys
 from xlwings.constants import BordersIndex
+import re
+import xlwings as xw
 import configparser
-import warnings
-import requests
-import urllib3
 
-def extrair_dados(session):
+def extrair_dados(session,url):
     while True:
-        layout = [
-            [sg.Text("Digite a URL do Laudo que deseja extrair as informações:"), sg.Input(key='url')],
-            [sg.Button('Extrair Dados')]
-        ]
-        window = sg.Window('Extrator de Dados Planilha ContraProvas', layout)
-        event, values = window.read()
-        window.close()
-
-        if event == sg.WINDOW_CLOSED:
-            sys.exit()
-
-        url = values['url']
-
         try:
             response = session.get(url, verify=False).content
             soup = BeautifulSoup(response, 'html.parser')
@@ -37,16 +21,7 @@ def extrair_dados(session):
             return procedimento, documento, contraProva, substancia
         except Exception:
             sg.popup_error(f"Erro ao extrair dados: Página Invalida")
-            continue
-
-
-import re
-
-import xlwings as xw
-import configparser
-
-
-
+            break
 
 def extrair_informacoes_dos_dados(dados):
     procedimento, documento, contraProva, substancia = dados

@@ -1,9 +1,5 @@
-import os
 import PySimpleGUI as sg
-import xlwings as xw
-from bs4 import BeautifulSoup
 import sys
-from xlwings.constants import BordersIndex
 import configparser
 import warnings
 import requests

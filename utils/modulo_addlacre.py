@@ -9,25 +9,15 @@ import warnings
 import requests
 import urllib3
 
+config = configparser.ConfigParser()
+config.read('config.ini')
+caminho = config.get('Config', 'caminho')
+wb = xw.Book(caminho)
+ws = wb.sheets['Contraprova']
 
-def adicionar_valor_lacre(session, last_row):
+def adicionar_valor_lacre(session, last_row, url2):
     while True:
-        layout = [
-            [sg.Text("Digite a URL do material para adicionar o valor do Lacpire e pressione"),
-             sg.Input(key='url_lacre')],
-            [sg.Button('Confirmar')]
-        ]
-        window = sg.Window('Extrator de Dados Planilha ContraProvas', layout)
-        event, values = window.read()
-        window.close()
-
-        if event == sg.WINDOW_CLOSED:
-            sys.exit()
-
-        wb = xw.Book('Contraprova-Controle.xlsm')
-        ws = wb.sheets['Contraprova']
         try:
-            url2 = values['url_lacre']
             response = session.get(url2, verify=False).content
             soup = BeautifulSoup(response, 'html.parser')
             lacre = soup.find('span', {'class': 'rotulo'}, text='Lacre:')
@@ -37,5 +27,5 @@ def adicionar_valor_lacre(session, last_row):
             wb.save()
             break
         except Exception:
-            sg.popup_error(f"Erro ao extrair dados: Página Invalida")
-            continue
+            sg.popup_error(f"Erro ao extrair dados: Página Inválida")
+            break
